@@ -1,5 +1,7 @@
 # Core Commit AI
 
+**TYPO3 commit messages for PhpStorm**
+
 PhpStorm plugin that writes TYPO3-style commit messages with a **local Ollama
 model**. Nothing leaves your machine except the request to your own Ollama URL.
 

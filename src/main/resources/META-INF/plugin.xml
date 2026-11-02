@@ -3,6 +3,7 @@
     <name>Core Commit AI</name>
     <vendor url="https://github.com/sivaprasad1988">sivaprasad1988</vendor>
     <description><![CDATA[
+    <b>TYPO3 commit messages for PhpStorm</b><br/><br/>
     Generates TYPO3-style commit messages with a local Ollama model.<br/>
     Sends a real unified diff of exactly the files checked in the commit dialog,
     formats <code>[!!!][KEYWORD] Subject</code>, 72-column <code>*</code> bullets and
