@@ -1,0 +1,35 @@
+<idea-plugin>
+    <id>de.gingco.typo3commitai</id>
+    <name>TYPO3 Commit AI</name>
+    <vendor>Gingco Communication GmbH &amp; Co. KG</vendor>
+    <description><![CDATA[
+    Generates TYPO3-style commit messages with a local Ollama model.<br/>
+    Sends a real unified diff of exactly the files checked in the commit dialog,
+    formats <code>[!!!][KEYWORD] Subject</code>, 72-column <code>*</code> bullets and
+    optional <code>Resolves:</code> / <code>Releases:</code> footer lines.
+    Nothing leaves the machine except the request to your Ollama URL.
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.vcs</depends>
+    <depends>Git4Idea</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable
+                parentId="tools"
+                instance="de.gingco.typo3commitai.SettingsConfigurable"
+                id="de.gingco.typo3commitai.settings"
+                displayName="TYPO3 Commit AI"/>
+        <notificationGroup id="TYPO3 Commit AI" displayType="BALLOON"/>
+    </extensions>
+
+    <actions>
+        <action id="Typo3CommitAi.Generate"
+                class="de.gingco.typo3commitai.GenerateCommitMessageAction"
+                text="Generate TYPO3 Commit Message"
+                description="Generate a TYPO3 commit message from the selected changes with Ollama"
+                icon="AllIcons.Actions.Lightning">
+            <add-to-group group-id="Vcs.MessageActionGroup" anchor="first"/>
+        </action>
+    </actions>
+</idea-plugin>
