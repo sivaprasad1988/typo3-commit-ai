@@ -1,4 +1,4 @@
-package de.gingco.typo3commitai
+package io.github.sivaprasad1988.typo3commitai
 
 /** What the model returns (see [Prompts.RESPONSE_SCHEMA]). */
 data class AiResult(

@@ -1,4 +1,4 @@
-package de.gingco.typo3commitai
+package io.github.sivaprasad1988.typo3commitai
 
 object Prompts {
     val DEFAULT_SYSTEM = """

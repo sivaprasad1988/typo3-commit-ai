@@ -1,4 +1,4 @@
-package de.gingco.typo3commitai
+package io.github.sivaprasad1988.typo3commitai
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.io.FileUtil

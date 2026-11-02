@@ -1,4 +1,4 @@
-package de.gingco.typo3commitai
+package io.github.sivaprasad1988.typo3commitai
 
 import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.Service

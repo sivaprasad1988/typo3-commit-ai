@@ -1,4 +1,4 @@
-package de.gingco.typo3commitai
+package io.github.sivaprasad1988.typo3commitai
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

@@ -1,4 +1,4 @@
-package de.gingco.typo3commitai
+package io.github.sivaprasad1988.typo3commitai
 
 import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType

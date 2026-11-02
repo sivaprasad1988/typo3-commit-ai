@@ -1,7 +1,5 @@
 # TYPO3 Commit AI
 
-*TYPO3 Commit AI – Gingco Communication – Version: 0.1.0 – 11 2026*
-
 PhpStorm plugin that writes TYPO3-style commit messages with a **local Ollama
 model**. Nothing leaves your machine except the request to your own Ollama URL.
 
@@ -86,7 +84,3 @@ OLLAMA_IT=1 ./gradlew test          # also runs the test against a real local Ol
 
 The build compiles against a local PhpStorm installation (`platformPath` in
 `gradle.properties`, default `/Applications/PhpStorm.app`).
-
----
-
-Intern · Autor: S. Sisupalan
