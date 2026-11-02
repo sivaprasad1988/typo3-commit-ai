@@ -54,7 +54,7 @@ model and it describes unrelated code. This plugin:
 ## Use
 
 1. Open the commit dialog, check the files to commit.
-2. Click the **⚡ Generate TYPO3 Commit Message** button in the message toolbar.
+2. Click the **Generate TYPO3 Commit Message** button (orange T icon) in the message toolbar.
 3. Review and edit the message. Change the keyword if your team uses a different convention.
 
 ## Settings

@@ -28,7 +28,7 @@
                 class="io.github.sivaprasad1988.typo3commitai.GenerateCommitMessageAction"
                 text="Generate TYPO3 Commit Message"
                 description="Generate a TYPO3 commit message from the selected changes with Ollama"
-                icon="AllIcons.Actions.Lightning">
+                icon="/icons/typo3ai.svg">
             <add-to-group group-id="Vcs.MessageActionGroup" anchor="first"/>
         </action>
     </actions>
