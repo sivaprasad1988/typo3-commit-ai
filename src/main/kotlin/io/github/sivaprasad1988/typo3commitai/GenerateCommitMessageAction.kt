@@ -83,7 +83,7 @@ class GenerateCommitMessageAction : DumbAwareAction() {
                     notify(
                         project,
                         "Diff larger than ${cfg.maxDiffChars} chars, so the message may be incomplete (${parts.joinToString("; ")}). " +
-                            "Raise the limit in Settings | Tools | TYPO3 Commit AI or commit in smaller parts.",
+                            "Raise the limit in Settings | Tools | Core Commit AI or commit in smaller parts.",
                         NotificationType.WARNING,
                     )
                 }
@@ -100,8 +100,8 @@ class GenerateCommitMessageAction : DumbAwareAction() {
     }
 
     private fun notify(project: Project, text: String, type: NotificationType) {
-        NotificationGroupManager.getInstance().getNotificationGroup("TYPO3 Commit AI")
-            .createNotification("TYPO3 Commit AI", text, type)
+        NotificationGroupManager.getInstance().getNotificationGroup("Core Commit AI")
+            .createNotification("Core Commit AI", text, type)
             .notify(project)
     }
 }

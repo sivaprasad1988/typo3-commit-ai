@@ -46,7 +46,7 @@ class Settings : PersistentStateComponent<Settings.Data> {
     }
 }
 
-class SettingsConfigurable : BoundConfigurable("TYPO3 Commit AI") {
+class SettingsConfigurable : BoundConfigurable("Core Commit AI") {
     override fun createPanel(): DialogPanel {
         val s = Settings.get().state
         return panel {

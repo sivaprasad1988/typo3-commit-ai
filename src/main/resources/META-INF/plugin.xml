@@ -1,13 +1,15 @@
 <idea-plugin>
     <id>io.github.sivaprasad1988.typo3commitai</id>
-    <name>TYPO3 Commit AI</name>
+    <name>Core Commit AI</name>
     <vendor url="https://github.com/sivaprasad1988">sivaprasad1988</vendor>
     <description><![CDATA[
     Generates TYPO3-style commit messages with a local Ollama model.<br/>
     Sends a real unified diff of exactly the files checked in the commit dialog,
     formats <code>[!!!][KEYWORD] Subject</code>, 72-column <code>*</code> bullets and
     optional <code>Resolves:</code> / <code>Releases:</code> footer lines.
-    Nothing leaves the machine except the request to your Ollama URL.
+    Nothing leaves the machine except the request to your Ollama URL.<br/><br/>
+    TYPO3 is a registered trademark of the TYPO3 Association. This plugin is an
+    independent project and is not affiliated with or endorsed by the TYPO3 Association.
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
@@ -19,8 +21,8 @@
                 parentId="tools"
                 instance="io.github.sivaprasad1988.typo3commitai.SettingsConfigurable"
                 id="io.github.sivaprasad1988.typo3commitai.settings"
-                displayName="TYPO3 Commit AI"/>
-        <notificationGroup id="TYPO3 Commit AI" displayType="BALLOON"/>
+                displayName="Core Commit AI"/>
+        <notificationGroup id="Core Commit AI" displayType="BALLOON"/>
     </extensions>
 
     <actions>

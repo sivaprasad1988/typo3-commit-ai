@@ -1,7 +1,11 @@
-# TYPO3 Commit AI
+# Core Commit AI
 
 PhpStorm plugin that writes TYPO3-style commit messages with a **local Ollama
 model**. Nothing leaves your machine except the request to your own Ollama URL.
+
+> TYPO3 is a registered trademark of the TYPO3 Association. Core Commit AI is
+> an independent project and is not affiliated with or endorsed by the TYPO3
+> Association.
 
 ```
 [TASK] Remove unused robotsTxt configuration
@@ -59,7 +63,7 @@ model and it describes unrelated code. This plugin:
 
 ## Settings
 
-**Settings → Tools → TYPO3 Commit AI**
+**Settings → Tools → Core Commit AI**
 
 | Setting | Default | Note |
 |---|---|---|
@@ -72,6 +76,12 @@ model and it describes unrelated code. This plugin:
 | Issue regex | `(?:^\|[/_-])(\d{3,})(?=[/_-]\|$)` | matches `feature/12345-text`; group 1 = number |
 | Releases | empty | e.g. `main, 13.4`; empty = no `Releases:` line |
 | System prompt | built-in | keep the JSON field names; clear the field to restore the default |
+
+## Prompt for other tools
+
+[`prompts/typo3-commit-message.txt`](prompts/typo3-commit-message.txt) holds a
+standalone version of the prompt (subject and body rules) that returns a
+plain-text commit message. Use it with any AI tool or commit-message plugin.
 
 ## Build from source
 
