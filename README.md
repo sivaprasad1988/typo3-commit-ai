@@ -63,6 +63,24 @@ model and it describes unrelated code. This plugin:
 2. Click the **Generate TYPO3 Commit Message** button (orange T icon) in the message toolbar.
 3. Review and edit the message. Change the keyword if your team uses a different convention.
 
+Regenerating keeps what is already in the footer: `Change-Id` (Gerrit amend),
+`Related:`, `Depends:`, `Signed-off-by:`, hand-typed `Resolves:` numbers and
+extra flags such as `[SECURITY]`.
+
+### Template dialog
+
+Click **Edit TYPO3 Commit Message…** (pencil icon) or press
+<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd>
+(macOS: <kbd>⌘</kbd>+<kbd>⌥</kbd>+<kbd>⇧</kbd>+<kbd>K</kbd>) in the commit dialog.
+
+- Fields for type, `[!!!]`, subject, description, `Resolves`, `Related`, `Releases` and `Depends`
+- **Generate with AI** fills type, subject and description from the diff; you review before **Apply**
+- **From Branch** inserts the issue number from the branch name
+- live preview of the final message and a subject counter (orange above 52, red above 72 characters)
+- Enter on a `* ` line starts the next bullet; Enter on an empty bullet ends the list
+- warns when `Related` is used without `Resolves` (TYPO3 rule)
+- with a message already in the field, the dialog opens with it parsed into the fields, so you can fix it and apply again
+
 ## Settings
 
 **Settings → Tools → Core Commit AI**

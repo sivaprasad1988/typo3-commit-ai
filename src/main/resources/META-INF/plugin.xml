@@ -34,5 +34,14 @@
                 icon="/icons/typo3ai.svg">
             <add-to-group group-id="Vcs.MessageActionGroup" anchor="first"/>
         </action>
+        <action id="Typo3CommitAi.Template"
+                class="io.github.sivaprasad1988.typo3commitai.ShowCommitTemplateAction"
+                text="Edit TYPO3 Commit Message…"
+                description="Write or edit the commit message field by field, optionally filled by AI"
+                icon="AllIcons.Actions.Edit">
+            <keyboard-shortcut keymap="$default" first-keystroke="control alt shift K"/>
+            <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta alt shift K"/>
+            <add-to-group group-id="Vcs.MessageActionGroup" anchor="after" relative-to-action="Typo3CommitAi.Generate"/>
+        </action>
     </actions>
 </idea-plugin>

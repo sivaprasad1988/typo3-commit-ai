@@ -74,6 +74,79 @@ class LogicTest {
         assertEquals(AiResult("TASK", false, "Remove x", listOf("Drop y")), OllamaClient.parse(body))
     }
 
+    private val gerritMessage = """
+        [!!!][SECURITY][BUGFIX] Prevent access to hidden records
+
+        * Check the hidden flag before records are rendered in the frontend so
+          that editors cannot leak drafts.
+        * Add a regression test.
+
+        This is a longer explanation that should be wrapped at seventy-two
+        characters.
+
+            vendor/bin/typo3 cache:flush
+
+        Resolves: #12345
+        Resolves: #678
+        Related: #999
+        Releases: main, 13.4
+        Signed-off-by: Jane Doe <jane@example.com>
+        Change-Id: I0123456789abcdef0123456789abcdef01234567
+    """.trimIndent()
+
+    @Test fun `existing message is parsed into fields`() {
+        val d = CommitMessageParser.parse(gerritMessage)
+        assertEquals("BUGFIX", d.type)
+        assertTrue(d.breaking)
+        assertEquals(listOf("SECURITY"), d.extraFlags)
+        assertEquals("Prevent access to hidden records", d.subject)
+        assertEquals(listOf("12345", "678"), d.resolves)
+        assertEquals(listOf("999"), d.related)
+        assertEquals("main, 13.4", d.releases)
+        assertEquals(
+            listOf("Signed-off-by: Jane Doe <jane@example.com>", "Change-Id: I0123456789abcdef0123456789abcdef01234567"),
+            d.otherTrailers,
+        )
+        // Wrapped bullets are joined back into one editable line each.
+        assertTrue(d.description.startsWith("* Check the hidden flag before records are rendered in the frontend so that editors cannot leak drafts.\n* Add a regression test."))
+        assertTrue(d.description.contains("\n    vendor/bin/typo3 cache:flush"))
+    }
+
+    @Test fun `parse and format round trip keeps a well formed message unchanged`() {
+        assertEquals(gerritMessage, f.format(CommitMessageParser.parse(gerritMessage)))
+    }
+
+    @Test fun `message without footer or keyword`() {
+        val d = CommitMessageParser.parse("Fix typo\n\nSome text")
+        assertEquals("TASK", d.type)
+        assertEquals("Fix typo", d.subject)
+        assertEquals("Some text", d.description)
+        assertEquals(emptyList<String>(), d.otherTrailers)
+        assertEquals(CommitData(), CommitMessageParser.parse("   \n"))
+    }
+
+    @Test fun `description renders bullets, paragraphs and dash bullets`() {
+        assertEquals(
+            listOf("* One", "* Two", "", "Plain paragraph"),
+            Description.render("- One\n*   Two\n\n\nPlain\nparagraph\n\n"),
+        )
+    }
+
+    @Test fun `regenerating keeps Change-Id, Related and hand-typed issues`() {
+        val generated = f.fromAi(AiResult("TASK", false, "New subject", listOf("New bullet")), FooterOptions(resolves = listOf("111")))
+        val kept = GenerateCommitMessageAction.keepFooter(generated, gerritMessage)
+        assertEquals("New subject", kept.subject)
+        assertEquals(listOf("12345", "678"), kept.resolves)
+        assertEquals(listOf("999"), kept.related)
+        assertEquals(listOf("SECURITY"), kept.extraFlags)
+        assertTrue(f.format(kept).endsWith("Change-Id: I0123456789abcdef0123456789abcdef01234567"))
+        assertEquals(generated, GenerateCommitMessageAction.keepFooter(generated, " "))
+    }
+
+    @Test fun `issue lists accept commas, spaces and hashes`() {
+        assertEquals(listOf("1", "22", "333"), f.issues("#1, 22  #333,1"))
+    }
+
     @Test fun `context size grows with the prompt but stays bounded`() {
         assertEquals(8192, OllamaClient.contextSize(100))
         assertEquals(32768, OllamaClient.contextSize(1_000_000))
