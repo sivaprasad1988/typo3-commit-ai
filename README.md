@@ -5,6 +5,9 @@
 PhpStorm plugin that writes TYPO3-style commit messages with a **local Ollama
 model**. Nothing leaves your machine except the request to your own Ollama URL.
 
+> Built with AI assistance (Claude by Anthropic). Designed and maintained by
+> [sivaprasad1988](https://github.com/sivaprasad1988).
+
 > TYPO3 is a registered trademark of the TYPO3 Association. Core Commit AI is
 > an independent project and is not affiliated with or endorsed by the TYPO3
 > Association.

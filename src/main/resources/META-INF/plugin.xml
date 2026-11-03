@@ -9,6 +9,7 @@
     formats <code>[!!!][KEYWORD] Subject</code>, 72-column <code>*</code> bullets and
     optional <code>Resolves:</code> / <code>Releases:</code> footer lines.
     Nothing leaves the machine except the request to your Ollama URL.<br/><br/>
+    Built with AI assistance (Claude by Anthropic). Designed and maintained by sivaprasad1988.<br/><br/>
     TYPO3 is a registered trademark of the TYPO3 Association. This plugin is an
     independent project and is not affiliated with or endorsed by the TYPO3 Association.
     ]]></description>
