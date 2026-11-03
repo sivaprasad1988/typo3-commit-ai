@@ -18,6 +18,20 @@ model**. Nothing leaves your machine except the request to your own Ollama URL.
 Resolves: #12345
 ```
 
+**Contents:**
+[Why another plugin?](#why-another-plugin) ·
+[How it works](#how-it-works) ·
+[Message format](#the-typo3-message-format) ·
+[Requirements](#requirements) ·
+[Install](#install) ·
+[Use](#use) ·
+[Template dialog](#template-dialog) ·
+[Shortcuts](#keyboard-shortcuts) ·
+[Settings](#settings) ·
+[Troubleshooting](#troubleshooting) ·
+[FAQ](#faq) ·
+[Build from source](#build-from-source)
+
 ## Why another plugin?
 
 Existing plugins send the full *before* and *after* content of every file and
@@ -35,8 +49,39 @@ model and it describes unrelated code. This plugin:
   - exactly one `[BUGFIX]`, `[FEATURE]`, `[TASK]` or `[DOCS]` keyword, with `[!!!]` in front for breaking changes
   - `*` bullets wrapped at 72 characters with a hanging indent
   - optional `Resolves: #N` (from the branch name) and `Releases:` footer lines
-  - no `Change-Id` (left to the Gerrit hook) and no `Signed-off-by`
+  - no `Change-Id` (left to the Gerrit hook) and no `Signed-off-by`; existing ones are kept
 - warns when the subject is longer than 72 characters
+- offers a **template dialog** to write or fix a message field by field, with or without AI
+
+## How it works
+
+![Two paths: one click from diff to commit field, or the template dialog with parser, optional AI fill and Apply](docs/images/workflow.svg)
+
+- **One click** (orange T): diff → local Ollama → formatter → commit field. Nothing to fill in.
+- **Template dialog** (pencil): the current message is parsed into fields, you edit
+  (optionally let AI fill type, subject and description), **Apply** formats it back.
+  Open it again at any time to fix the message.
+
+In both paths the model only delivers content (type, breaking flag, subject,
+bullets). Brackets, wrapping and footer syntax always come from code.
+
+## The TYPO3 message format
+
+![Annotated commit message: subject line with flag and keyword, wrapped bullet body, footer lines, preserved Change-Id](docs/images/message-anatomy.svg)
+
+| Part | Rule applied by the plugin |
+|---|---|
+| Flag | `[!!!]` first, only for breaking changes. Other flags already present (e.g. `[SECURITY]`) are kept. |
+| Keyword | exactly one of `[BUGFIX]`, `[FEATURE]`, `[TASK]`, `[DOCS]`; unknown types become `[TASK]` |
+| Subject | capitalised, no trailing period; counter warns above 52, Apply is blocked above 72 characters |
+| Body | `*` bullets, wrapped at 72 with a two-space hanging indent; paragraphs wrapped at 72; indented lines (code) kept as they are |
+| `Resolves:` / `Related:` | one line per issue, `#` added automatically |
+| `Releases:` | one comma-separated line, e.g. `Releases: main, 13.4` |
+| `Depends:` | one line per Change-Id (documentation patches) |
+| `Change-Id:`, `Signed-off-by:`, `Reverts:` … | never created, always kept in their original order |
+
+Rules from the
+[TYPO3 commit message guide](https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/Appendix/CommitMessage.html).
 
 ## Requirements
 
@@ -73,13 +118,38 @@ Click **Edit TYPO3 Commit Message…** (pencil icon) or press
 <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd>
 (macOS: <kbd>⌘</kbd>+<kbd>⌥</kbd>+<kbd>⇧</kbd>+<kbd>K</kbd>) in the commit dialog.
 
-- Fields for type, `[!!!]`, subject, description, `Resolves`, `Related`, `Releases` and `Depends`
-- **Generate with AI** fills type, subject and description from the diff; you review before **Apply**
-- **From Branch** inserts the issue number from the branch name
-- live preview of the final message and a subject counter (orange above 52, red above 72 characters)
-- Enter on a `* ` line starts the next bullet; Enter on an empty bullet ends the list
-- warns when `Related` is used without `Resolves` (TYPO3 rule)
-- with a message already in the field, the dialog opens with it parsed into the fields, so you can fix it and apply again
+![Schematic of the template dialog: type, breaking flag, subject with counter, description, Resolves and Related with From Branch buttons, Releases, Depends, preview, Generate with AI, Cancel and Apply](docs/images/dialog-layout.svg)
+
+<sub>Schematic drawing; the real dialog uses your IDE theme.</sub>
+
+| Field | What it does |
+|---|---|
+| Type | `BUGFIX`, `FEATURE`, `TASK` or `DOCS` |
+| Breaking change | adds `[!!!]` in front of the keyword |
+| Subject | without keyword; counter shows the length of the whole first line |
+| Description | one change per line starting with `*`; Enter continues the list, Enter on an empty `* ` ends it |
+| Resolves / Related | issue numbers, comma separated; **From Branch** adds the number from the branch name |
+| Releases | e.g. `main, 13.4`; prefilled from the settings for new messages |
+| Depends | Change-Id of the core patch, documentation patches only |
+| Preview | the exact text that **Apply** writes into the commit field |
+
+- **Generate with AI** fills type, subject and description from the diff. Related,
+  Releases and Depends stay as you entered them; an empty Resolves field gets the
+  number from the branch name (if enabled in the settings).
+- With a message already in the field, the dialog opens with it parsed into the
+  fields: wrapped bullets become one line again, so you can edit and apply again.
+- Validation: an empty subject or a first line over 72 characters blocks **Apply**;
+  `Related` without `Resolves` shows a warning (TYPO3 rule) but still allows **Apply**.
+
+## Keyboard shortcuts
+
+| Action | Windows / Linux | macOS |
+|---|---|---|
+| Edit TYPO3 Commit Message… (dialog) | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd> | <kbd>⌘</kbd>+<kbd>⌥</kbd>+<kbd>⇧</kbd>+<kbd>K</kbd> |
+| Generate TYPO3 Commit Message (one click) | none by default | none by default |
+
+The actions are available in the commit dialog. Change or add shortcuts in
+**Settings → Keymap** (search for "TYPO3").
 
 ## Settings
 
@@ -96,6 +166,39 @@ Click **Edit TYPO3 Commit Message…** (pencil icon) or press
 | Issue regex | `(?:^\|[/_-])(\d{3,})(?=[/_-]\|$)` | matches `feature/12345-text`; group 1 = number |
 | Releases | empty | e.g. `main, 13.4`; empty = no `Releases:` line |
 | System prompt | built-in | keep the JSON field names; clear the field to restore the default |
+
+## Troubleshooting
+
+| Message | Cause and fix |
+|---|---|
+| `Cannot reach Ollama at http://localhost:11434. Is Ollama running?` | Start Ollama (`ollama serve` or the Ollama app). Check the URL in the settings. |
+| `Ollama error 404: … not found. Run: ollama pull <model>` | The model is not pulled. Run the command shown, or set a pulled model (`ollama list`). |
+| `Ollama did not answer within 180 s.` | The first call loads the model into memory. Try again, raise the timeout, or use a smaller model such as `qwen2.5-coder:7b`. |
+| `Diff larger than 40000 chars, so the message may be incomplete (…)` | The listed files were cut or left out. Raise **Max diff size** or commit in smaller parts. |
+| `No changes selected for commit.` | Check at least one file in the commit dialog. |
+| `Model did not return JSON` / `Model returned an empty subject.` | Use a coding model (default `qwen2.5-coder:14b`). If you changed the system prompt, keep the JSON field names or clear it to restore the default. |
+| No button in the commit dialog | The buttons sit in the toolbar of the commit message field. Check that the plugin is enabled in **Settings → Plugins** and restart the IDE after installing. |
+| `No issue number found in branch "…"` | The branch name does not match the **Issue regex** (default: a number with at least 3 digits between `/`, `-` or `_`, e.g. `feature/12345-text`). |
+
+## FAQ
+
+**Does my code leave the machine?**
+Only as the request to the Ollama URL you configure. With the default
+`http://localhost:11434`, everything stays local.
+
+**Can I use it without AI?**
+Yes. The template dialog works without Ollama; only **Generate with AI** needs it.
+
+**Will regenerating break my Gerrit change?**
+No. An existing `Change-Id:` line is kept, so amending updates the same change.
+
+**Why no `[WIP]` flag?**
+It is not part of the TYPO3 commit message guide. Flags already in the message
+are kept, though.
+
+**Our team uses other keywords.**
+Change the keyword after generating, or edit the system prompt. The formatter
+only accepts `BUGFIX`, `FEATURE`, `TASK` and `DOCS` and falls back to `TASK`.
 
 ## Prompt for other tools
 
