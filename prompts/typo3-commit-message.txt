@@ -16,7 +16,10 @@ SUBJECT (first line)
   [FEATURE] new functionality, also small additions
   [TASK]    everything else: refactoring, removing obsolete code,
             configuration, build, CI, dependencies, deprecations
-  [DOCS]    documentation only
+  [DOCS]    only documentation changed (README, CHANGELOG, *.md, *.rst,
+            Documentation/ or docs/ folders), even when the text
+            describes a new feature or bug fix; if code changed too,
+            choose the keyword by the code change
 - Put [!!!] directly in front of the keyword (e.g. [!!!][TASK]) only if
   the change breaks backwards compatibility (removes or changes public
   API, configuration or behaviour that other code relies on). Never for

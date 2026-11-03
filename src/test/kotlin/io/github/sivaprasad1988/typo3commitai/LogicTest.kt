@@ -143,6 +143,18 @@ class LogicTest {
         assertEquals(generated, GenerateCommitMessageAction.keepFooter(generated, " "))
     }
 
+    @Test fun `documentation-only changes are detected`() {
+        val d = DocsDetector
+        assertTrue(d.isDocsOnly(listOf("README.md")))
+        assertTrue(d.isDocsOnly(listOf("README.md", "docs/images/workflow.svg")))
+        assertTrue(d.isDocsOnly(listOf("Documentation/Index.rst", "Documentation/guides.xml", "CHANGELOG")))
+        assertTrue(d.isDocsOnly(listOf("packages/site/Documentation/Images/a.png")))
+        assertFalse(d.isDocsOnly(listOf("README.md", "src/main/kotlin/Foo.kt")))
+        assertFalse(d.isDocsOnly(listOf("public/robots.txt")))
+        assertFalse(d.isDocsOnly(listOf("src/docsgenerator/Main.kt")))
+        assertFalse(d.isDocsOnly(emptyList()))
+    }
+
     @Test fun `issue lists accept commas, spaces and hashes`() {
         assertEquals(listOf("1", "22", "333"), f.issues("#1, 22  #333,1"))
     }

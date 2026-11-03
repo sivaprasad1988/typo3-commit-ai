@@ -75,7 +75,7 @@ bullets). Brackets, wrapping and footer syntax always come from code.
 | Part | Rule applied by the plugin |
 |---|---|
 | Flag | `[!!!]` first, only for breaking changes. Other flags already present (e.g. `[SECURITY]`) are kept. |
-| Keyword | exactly one of `[BUGFIX]`, `[FEATURE]`, `[TASK]`, `[DOCS]`; unknown types become `[TASK]` |
+| Keyword | exactly one of `[BUGFIX]`, `[FEATURE]`, `[TASK]`, `[DOCS]`; unknown types become `[TASK]`; always `[DOCS]` when only documentation changed (README, CHANGELOG, `*.md`, `*.rst`, `Documentation/`, `docs/`) |
 | Subject | capitalised, no trailing period; counter warns above 52, Apply is blocked above 72 characters |
 | Body | `*` bullets, wrapped at 72 with a two-space hanging indent; paragraphs wrapped at 72; indented lines (code) kept as they are |
 | `Resolves:` / `Related:` | one line per issue, `#` added automatically |

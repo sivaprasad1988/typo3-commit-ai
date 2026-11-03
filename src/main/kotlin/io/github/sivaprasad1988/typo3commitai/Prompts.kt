@@ -13,7 +13,10 @@ Answer with JSON:
 - type: BUGFIX (fixes a bug), FEATURE (new functionality, also small
   additions), TASK (everything else: refactoring, removing obsolete code,
   configuration, build, CI, dependencies, deprecations), DOCS
-  (documentation only).
+  (only documentation changed: README, CHANGELOG, *.md or *.rst files,
+  Documentation/ or docs/ folders). If only documentation changed, the
+  type is DOCS even when the text describes a new feature or bug fix.
+  If code and documentation changed, choose the type by the code change.
 - breaking: true only if the change breaks backwards compatibility
   (removes or changes public API, configuration or behaviour that other
   code relies on). Always false for deprecations.

@@ -152,6 +152,27 @@ object CommitMessageFormatter {
     }
 }
 
+/**
+ * Decides [DOCS] in code: when every changed file is documentation, the type
+ * is DOCS no matter what the model (or a customised system prompt) says.
+ */
+object DocsDetector {
+    private val DOC_DIRS = setOf("documentation", "docs", "doc")
+    private val DOC_EXTENSIONS = setOf("md", "markdown", "rst", "adoc")
+    private val DOC_NAMES = Regex("""^(readme|changelog|contributing|authors|upgrading)(\..*)?$""", RegexOption.IGNORE_CASE)
+
+    fun isDocumentation(path: String): Boolean {
+        val parts = path.replace('\\', '/').trim('/').split('/').filter { it.isNotEmpty() }
+        if (parts.isEmpty()) return false
+        val name = parts.last()
+        return parts.dropLast(1).any { it.lowercase() in DOC_DIRS } ||
+            name.substringAfterLast('.', "").lowercase() in DOC_EXTENSIONS ||
+            DOC_NAMES.matches(name)
+    }
+
+    fun isDocsOnly(paths: List<String>): Boolean = paths.isNotEmpty() && paths.all(::isDocumentation)
+}
+
 /** Body text <-> items: bullets, paragraphs, verbatim (indented) lines and blank-line gaps. */
 object Description {
     sealed interface Item {

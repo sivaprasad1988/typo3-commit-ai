@@ -42,7 +42,8 @@ class CommitMessageGenerator(private val project: Project) {
         val cfg = s.state
 
         indicator.text = "Collecting diff"
-        val budget = DiffBudget.fit(DiffCollector(project).collect(selection.changes, selection.unversioned), cfg.maxDiffChars)
+        val files = DiffCollector(project).collect(selection.changes, selection.unversioned)
+        val budget = DiffBudget.fit(files, cfg.maxDiffChars)
         if (budget.text.isBlank()) throw UserFacingException("The selected changes produced an empty diff.")
         indicator.checkCanceled()
 
@@ -53,6 +54,7 @@ class CommitMessageGenerator(private val project: Project) {
             cfg.temperaturePercent / 100.0,
             Duration.ofSeconds(cfg.timeoutSeconds.toLong()),
         ).generate(s.effectiveSystemPrompt, Prompts.userMessage(budget.text))
+            .let { if (DocsDetector.isDocsOnly(files.map(FileDiff::path))) it.copy(type = "DOCS") else it }
         indicator.checkCanceled()
 
         val warnings = buildList {
