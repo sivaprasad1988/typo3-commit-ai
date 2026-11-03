@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="590" viewBox="0 0 720 590" role="img" aria-labelledby="t d">
+  <title id="t">Template dialog layout (schematic)</title>
+  <desc id="d">Schematic of the TYPO3 Commit Message dialog: type and breaking flag, subject with character counter, description, Resolves and Related with From Branch buttons, Releases, Depends, live preview, and Generate with AI, Cancel and Apply buttons.</desc>
+  <style>
+    :root { --bg:#ffffff; --win:#f6f8fa; --field:#ffffff; --border:#d0d7de; --text:#1f2328; --muted:#59636e; --accent:#ff8700; --blue:#0969da; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --win:#161b22; --field:#0d1117; --border:#3d444d; --text:#e6edf3; --muted:#9198a1; --accent:#ff9f33; --blue:#4493f8; }
+    }
+    .bg { fill:var(--bg); }
+    .win { fill:var(--win); stroke:var(--border); }
+    .f { fill:var(--field); stroke:var(--border); }
+    .btn { fill:var(--win); stroke:var(--border); }
+    .ok { fill:var(--blue); }
+    .l { font:13px -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--text); }
+    .r { text-anchor:end; }
+    .c { text-anchor:middle; }
+    .m { font:12.5px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; fill:var(--text); }
+    .hint { font:11px -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--muted); }
+    .cnt { font:600 12px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; fill:var(--accent); }
+    .w { font:600 13px -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:#ffffff; }
+    .tag { font:600 10px -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--muted); letter-spacing:.06em; }
+  </style>
+  <rect class="bg" width="720" height="590" rx="8"/>
+  <rect class="win" x="10" y="10" width="700" height="570" rx="8"/>
+  <text class="l c" x="360" y="34" font-weight="600">TYPO3 Commit Message</text>
+  <text class="tag" x="590" y="34">SCHEMATIC</text>
+  <line x1="10" y1="46" x2="710" y2="46" stroke="var(--border)"/>
+
+  <text class="l r" x="110" y="76">Type:</text>
+  <rect class="f" x="120" y="60" width="110" height="24" rx="4"/><text class="l" x="130" y="77">BUGFIX</text><text class="l" x="214" y="77">▾</text>
+  <rect class="f" x="248" y="65" width="14" height="14" rx="3"/><path d="M251 72 l3 3 l6 -7" stroke="var(--blue)" stroke-width="2" fill="none"/>
+  <text class="l" x="270" y="77">Breaking change [!!!]</text>
+
+  <text class="l r" x="110" y="112">Subject:</text>
+  <rect class="f" x="120" y="96" width="510" height="24" rx="4"/><text class="l" x="130" y="113">Prevent access to hidden records</text>
+  <text class="cnt" x="640" y="113">46/72</text>
+  <text class="hint" x="120" y="134">Imperative. Whole line below 52 characters if possible, 72 at most.</text>
+
+  <text class="l r" x="110" y="160">Description:</text>
+  <rect class="f" x="120" y="146" width="570" height="88" rx="4"/>
+  <text class="m" x="130" y="166">* Check the hidden flag before records are rendered in the frontend.</text>
+  <text class="m" x="130" y="184">* Add a regression test.</text>
+  <text class="m" x="130" y="202">* <tspan fill="var(--accent)">|</tspan></text>
+  <text class="hint" x="120" y="250">One change per line starting with * (Enter continues the list). Wrapped at 72 on Apply.</text>
+
+  <text class="l r" x="110" y="282">Resolves:</text>
+  <rect class="f" x="120" y="266" width="440" height="24" rx="4"/><text class="l" x="130" y="283">12345</text>
+  <rect class="btn" x="570" y="266" width="120" height="24" rx="4"/><text class="l c" x="630" y="283">⎇ From Branch</text>
+  <text class="l r" x="110" y="316">Related:</text>
+  <rect class="f" x="120" y="300" width="440" height="24" rx="4"/><text class="l" x="130" y="317">999</text>
+  <rect class="btn" x="570" y="300" width="120" height="24" rx="4"/><text class="l c" x="630" y="317">⎇ From Branch</text>
+  <text class="l r" x="110" y="350">Releases:</text>
+  <rect class="f" x="120" y="334" width="570" height="24" rx="4"/><text class="l" x="130" y="351">main, 13.4</text>
+  <text class="l r" x="110" y="384">Depends:</text>
+  <rect class="f" x="120" y="368" width="570" height="24" rx="4"/>
+  <text class="hint" x="130" y="385">Change-Id of the core patch, documentation patches only</text>
+
+  <text class="l" x="30" y="420" font-weight="600">Preview</text>
+  <line x1="88" y1="416" x2="690" y2="416" stroke="var(--border)"/>
+  <rect class="f" x="30" y="428" width="660" height="100" rx="4"/>
+  <text class="m" x="40" y="446">[!!!][BUGFIX] Prevent access to hidden records</text>
+  <text class="m" x="40" y="476">* Check the hidden flag before records are rendered in the frontend.</text>
+  <text class="m" x="40" y="492">* Add a regression test.</text>
+  <text class="m" x="40" y="522">Resolves: #12345</text>
+
+  <rect class="btn" x="30" y="542" width="140" height="28" rx="5"/><text class="l c" x="100" y="561">Generate with AI</text>
+  <rect class="btn" x="500" y="542" width="90" height="28" rx="5"/><text class="l c" x="545" y="561">Cancel</text>
+  <rect class="ok" x="600" y="542" width="90" height="28" rx="5"/><text class="w c" x="645" y="561">Apply</text>
+</svg>

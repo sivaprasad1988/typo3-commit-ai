@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="300" viewBox="0 0 900 300" role="img" aria-labelledby="t d">
+  <title id="t">How Core Commit AI builds a message</title>
+  <desc id="d">One-click path: checked files, git diff, local Ollama returning JSON, formatter, commit field. Template dialog path: commit field parsed into the dialog, optional AI fill, Apply runs the formatter and writes back to the commit field.</desc>
+  <style>
+    :root { --bg:#ffffff; --box:#f6f8fa; --border:#d0d7de; --text:#1f2328; --muted:#59636e; --accent:#ff8700; --line:#8c959f; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --box:#161b22; --border:#30363d; --text:#e6edf3; --muted:#9198a1; --accent:#ff9f33; --line:#6e7681; }
+    }
+    .bg { fill:var(--bg); }
+    .box { fill:var(--box); stroke:var(--border); }
+    .hot { fill:var(--box); stroke:var(--accent); stroke-width:2; }
+    .t { font:600 13px -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--text); text-anchor:middle; }
+    .s { font:11px -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--muted); text-anchor:middle; }
+    .lane { font:600 12px -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--accent); letter-spacing:.04em; }
+    .ln { stroke:var(--line); stroke-width:1.5; fill:none; marker-end:url(#a); }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--line)"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="900" height="300" rx="8"/>
+
+  <text class="lane" x="20" y="30">ONE CLICK · orange T button</text>
+  <rect class="box" x="20" y="44" width="150" height="60" rx="6"/>
+  <text class="t" x="95" y="70">Checked files</text><text class="s" x="95" y="88">commit dialog selection</text>
+  <rect class="box" x="200" y="44" width="150" height="60" rx="6"/>
+  <text class="t" x="275" y="70">git diff -M HEAD</text><text class="s" x="275" y="88">+ new files, size budget</text>
+  <rect class="hot" x="380" y="44" width="150" height="60" rx="6"/>
+  <text class="t" x="455" y="70">Local Ollama</text><text class="s" x="455" y="88">JSON: type, subject, bullets</text>
+  <rect class="box" x="560" y="44" width="150" height="60" rx="6"/>
+  <text class="t" x="635" y="70">Formatter</text><text class="s" x="635" y="88">TYPO3 rules in code</text>
+  <rect class="box" x="740" y="44" width="140" height="60" rx="6"/>
+  <text class="t" x="810" y="70">Commit field</text><text class="s" x="810" y="88">footer kept</text>
+  <path class="ln" d="M170 74 H198"/><path class="ln" d="M350 74 H378"/><path class="ln" d="M530 74 H558"/><path class="ln" d="M710 74 H738"/>
+
+  <text class="lane" x="20" y="160">TEMPLATE DIALOG · pencil button or Ctrl+Alt+Shift+K</text>
+  <rect class="box" x="20" y="174" width="150" height="60" rx="6"/>
+  <text class="t" x="95" y="200">Commit field</text><text class="s" x="95" y="218">empty or existing text</text>
+  <rect class="box" x="200" y="174" width="150" height="60" rx="6"/>
+  <text class="t" x="275" y="200">Parser</text><text class="s" x="275" y="218">text → fields</text>
+  <rect class="hot" x="380" y="174" width="150" height="60" rx="6"/>
+  <text class="t" x="455" y="200">Dialog</text><text class="s" x="455" y="218">edit, preview, From Branch</text>
+  <rect class="box" x="560" y="174" width="150" height="60" rx="6"/>
+  <text class="t" x="635" y="200">Apply → Formatter</text><text class="s" x="635" y="218">validates 72 chars</text>
+  <rect class="box" x="740" y="174" width="140" height="60" rx="6"/>
+  <text class="t" x="810" y="200">Commit field</text><text class="s" x="810" y="218">reopen to edit again</text>
+  <path class="ln" d="M170 204 H198"/><path class="ln" d="M350 204 H378"/><path class="ln" d="M530 204 H558"/><path class="ln" d="M710 204 H738"/>
+
+  <path class="ln" d="M455 104 V172" stroke-dasharray="4 3"/>
+  <text class="s" x="462" y="142" style="text-anchor:start">Generate with AI fills the fields</text>
+  <path class="ln" d="M810 234 V262 H95 V236" stroke-dasharray="4 3"/>
+  <text class="s" x="452" y="280">click the pencil again: the message is parsed back into the dialog</text>
+</svg>

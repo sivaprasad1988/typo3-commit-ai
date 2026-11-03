@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="330" viewBox="0 0 900 330" role="img" aria-labelledby="t d">
+  <title id="t">Anatomy of a TYPO3 commit message</title>
+  <desc id="d">Subject line with flag and keyword, bullet body wrapped at 72 characters, footer lines with Resolves, Related, Releases and a preserved Change-Id.</desc>
+  <style>
+    :root { --bg:#ffffff; --panel:#f6f8fa; --border:#d0d7de; --text:#1f2328; --muted:#59636e; --accent:#ff8700; --blue:#0969da; --green:#1a7f37; --purple:#8250df; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --panel:#161b22; --border:#30363d; --text:#e6edf3; --muted:#9198a1; --accent:#ff9f33; --blue:#4493f8; --green:#3fb950; --purple:#ab7df8; }
+    }
+    .bg { fill:var(--bg); }
+    .panel { fill:var(--panel); stroke:var(--border); }
+    .code { font:12px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; fill:var(--text); }
+    .note { font:13px -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--text); }
+    .small { font:12px -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--muted); }
+    .h { font:600 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--text); }
+    .flag { fill:var(--accent); font-weight:700; }
+    .kw { fill:var(--blue); font-weight:700; }
+    .bul { fill:var(--green); font-weight:700; }
+    .key { fill:var(--purple); }
+    .br { fill:none; stroke-width:2; }
+  </style>
+  <rect class="bg" width="900" height="330" rx="8"/>
+  <rect class="panel" x="16" y="16" width="540" height="298" rx="6"/>
+  <text class="small" x="30" y="38">commit message</text>
+
+  <text class="code" x="30" y="66"><tspan class="flag">[!!!]</tspan><tspan class="kw">[BUGFIX]</tspan> Prevent access to hidden records</text>
+  <text class="code" x="30" y="106"><tspan class="bul">*</tspan> Check the hidden flag before records are rendered in the frontend so</text>
+  <text class="code" x="44.4" y="126">that editors cannot leak drafts.</text>
+  <text class="code" x="30" y="146"><tspan class="bul">*</tspan> Add a regression test.</text>
+  <text class="code" x="30" y="186"><tspan class="key">Resolves:</tspan> #12345</text>
+  <text class="code" x="30" y="206"><tspan class="key">Related:</tspan> #999</text>
+  <text class="code" x="30" y="226"><tspan class="key">Releases:</tspan> main, 13.4</text>
+  <text class="code" x="30" y="266"><tspan class="key">Change-Id:</tspan> I0123456789abcdef…</text>
+
+  <path class="br" stroke="var(--accent)" d="M570 52 h8 v20 h-8"/>
+  <text class="h" x="586" y="60">Subject line</text>
+  <text class="small" x="586" y="77">[!!!] if breaking, then exactly one keyword.</text>
+  <text class="small" x="586" y="92">Below 52 characters if possible, 72 at most.</text>
+
+  <path class="br" stroke="var(--green)" d="M570 92 h8 v60 h-8"/>
+  <text class="h" x="586" y="118">Body</text>
+  <text class="small" x="586" y="135">One * bullet per change, imperative mood.</text>
+  <text class="small" x="586" y="150">Wrapped at 72 characters with a hanging indent.</text>
+
+  <path class="br" stroke="var(--purple)" d="M570 172 h8 v60 h-8"/>
+  <text class="h" x="586" y="198">Footer</text>
+  <text class="small" x="586" y="215">One Resolves / Related line per issue,</text>
+  <text class="small" x="586" y="230">Releases as comma list; AI adds no Signed-off-by.</text>
+
+  <path class="br" stroke="var(--muted)" d="M570 252 h8 v20 h-8"/>
+  <text class="h" x="586" y="262">Kept unchanged</text>
+  <text class="small" x="586" y="279">Change-Id, Signed-off-by, [SECURITY] survive</text>
+  <text class="small" x="586" y="294">regenerating and editing in the dialog.</text>
+</svg>
