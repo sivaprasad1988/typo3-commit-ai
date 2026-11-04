@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="900" height="300" viewBox="0 0 900 300" role="img" aria-labelledby="t d">
   <title id="t">How Core Commit AI builds a message</title>
-  <desc id="d">One-click path: checked files, git diff, local Ollama returning JSON, formatter, commit field. Template dialog path: commit field parsed into the dialog, optional AI fill, Apply runs the formatter and writes back to the commit field.</desc>
+  <desc id="d">One-click path: checked files, git diff, AI provider (local Ollama, OpenAI or Claude) returning JSON, formatter, commit field. Template dialog path: commit field parsed into the dialog, optional AI fill, Apply runs the formatter and writes back to the commit field.</desc>
   <style>
     :root { --bg:#ffffff; --box:#f6f8fa; --border:#d0d7de; --text:#1f2328; --muted:#59636e; --accent:#ff8700; --line:#8c959f; }
     @media (prefers-color-scheme: dark) {
@@ -27,7 +27,7 @@
   <rect class="box" x="200" y="44" width="150" height="60" rx="6"/>
   <text class="t" x="275" y="70">git diff -M HEAD</text><text class="s" x="275" y="88">+ new files, size budget</text>
   <rect class="hot" x="380" y="44" width="150" height="60" rx="6"/>
-  <text class="t" x="455" y="70">Local Ollama</text><text class="s" x="455" y="88">JSON: type, subject, bullets</text>
+  <text class="t" x="455" y="70">AI provider</text><text class="s" x="455" y="88">Ollama, OpenAI or Claude</text>
   <rect class="box" x="560" y="44" width="150" height="60" rx="6"/>
   <text class="t" x="635" y="70">Formatter</text><text class="s" x="635" y="88">TYPO3 rules in code</text>
   <rect class="box" x="740" y="44" width="140" height="60" rx="6"/>

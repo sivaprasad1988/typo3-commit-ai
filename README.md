@@ -191,10 +191,14 @@ The actions are available in the commit dialog. Change or add shortcuts in
 | `Cannot reach Ollama at http://localhost:11434. Is Ollama running?` | Start Ollama (`ollama serve` or the Ollama app). Check the URL in the settings. |
 | `Ollama error 404: … not found. Run: ollama pull <model>` | The model is not pulled. Run the command shown, or set a pulled model (`ollama list`). |
 | `Ollama did not answer within 180 s.` | The first call loads the model into memory. Try again, raise the timeout, or use a smaller model such as `qwen2.5-coder:7b`. |
+| `Cannot reach OpenAI at …` / `Cannot reach Claude at …` | Check the base URL in the settings and your network or proxy. |
+| `OpenAI did not answer within 180 s.` / `Claude did not answer within 180 s.` | Raise **Timeout (s)**, lower **Max diff size**, or pick a faster model. |
 | `No OpenAI API key set.` / `No Anthropic API key set.` | Enter the key under **Settings → Tools → Core Commit AI**. |
 | `OpenAI error 401: …` / `Claude error 401: …` | The API key is wrong or revoked. Enter a new one. |
 | `… error 429: …` | Rate limit or quota reached. Wait, or check billing for your account. |
 | `Claude declined the request (stop_reason: refusal).` | The model refused this diff. Try again or switch the model. |
+| `Model refused: …` (OpenAI) | The model refused this diff. Try again or switch the model. |
+| `Claude stopped at the token limit before finishing the answer.` | Try again, or commit in smaller parts. |
 | `Diff larger than 40000 chars, so the message may be incomplete (…)` | The listed files were cut or left out. Raise **Max diff size** or commit in smaller parts. |
 | `No changes selected for commit.` | Check at least one file in the commit dialog. |
 | `Model did not return JSON` / `Model returned an empty subject.` | Use one of the suggested coding models (`qwen2.5-coder:14b` or `qwen2.5-coder:7b`). If it happens often with `7b`, switch to `14b`. If you changed the system prompt, keep the JSON field names or clear it to restore the default. |
