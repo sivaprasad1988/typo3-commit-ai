@@ -33,7 +33,7 @@ Answer with JSON:
     fun userMessage(diff: String): String =
         "Write the commit message for this unified git diff.\n\n$diff"
 
-    /** Ollama structured-output schema (`format` field). */
+    /** Structured-output JSON schema, shared by all providers (strict-mode compatible). */
     val RESPONSE_SCHEMA = """
 {
   "type": "object",
@@ -43,7 +43,8 @@ Answer with JSON:
     "subject": {"type": "string"},
     "bullets": {"type": "array", "items": {"type": "string"}}
   },
-  "required": ["type", "breaking", "subject", "bullets"]
+  "required": ["type", "breaking", "subject", "bullets"],
+  "additionalProperties": false
 }
 """.trim()
 }

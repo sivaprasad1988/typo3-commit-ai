@@ -11,7 +11,6 @@ import com.intellij.openapi.vcs.changes.Change
 import com.intellij.openapi.vcs.changes.ChangeListManager
 import com.intellij.vcs.commit.AbstractCommitWorkflowHandler
 import git4idea.repo.GitRepositoryManager
-import java.time.Duration
 
 /** The files checked in the commit dialog. */
 data class CommitSelection(val changes: List<Change>, val unversioned: List<FilePath>) {
@@ -34,7 +33,7 @@ class UserFacingException(message: String) : Exception(message)
 
 data class Generation(val result: AiResult, val warnings: List<String>)
 
-/** Diff -> Ollama -> [AiResult]. Shared by the one-click action and the template dialog. */
+/** Diff -> AI provider -> [AiResult]. Shared by the one-click action and the template dialog. */
 class CommitMessageGenerator(private val project: Project) {
     fun generate(selection: CommitSelection, indicator: ProgressIndicator): Generation {
         if (selection.isEmpty) throw UserFacingException("No changes selected for commit.")
@@ -47,13 +46,9 @@ class CommitMessageGenerator(private val project: Project) {
         if (budget.text.isBlank()) throw UserFacingException("The selected changes produced an empty diff.")
         indicator.checkCanceled()
 
-        indicator.text = "Asking ${cfg.model}"
-        val result = OllamaClient(
-            cfg.ollamaUrl,
-            cfg.model,
-            cfg.temperaturePercent / 100.0,
-            Duration.ofSeconds(cfg.timeoutSeconds.toLong()),
-        ).generate(s.effectiveSystemPrompt, Prompts.userMessage(budget.text))
+        indicator.text = "Asking ${s.activeModel}"
+        val result = s.createClient()
+            .generate(s.effectiveSystemPrompt, Prompts.userMessage(budget.text))
             .let { if (DocsDetector.isDocsOnly(files.map(FileDiff::path))) it.copy(type = "DOCS") else it }
         indicator.checkCanceled()
 

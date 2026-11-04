@@ -4,11 +4,13 @@
     <vendor url="https://github.com/sivaprasad1988">sivaprasad1988</vendor>
     <description><![CDATA[
     <b>TYPO3 commit messages for PhpStorm</b><br/><br/>
-    Generates TYPO3-style commit messages with a local Ollama model.<br/>
+    Generates TYPO3-style commit messages with a local Ollama model, OpenAI
+    (or any OpenAI-compatible server) or Claude.<br/>
     Sends a real unified diff of exactly the files checked in the commit dialog,
     formats <code>[!!!][KEYWORD] Subject</code>, 72-column <code>*</code> bullets and
     optional <code>Resolves:</code> / <code>Releases:</code> footer lines.
-    Nothing leaves the machine except the request to your Ollama URL.<br/><br/>
+    With Ollama nothing leaves the machine except the request to your Ollama URL;
+    with OpenAI or Claude the diff is sent to that provider.<br/><br/>
     Built with AI assistance (Claude by Anthropic). Designed and maintained by sivaprasad1988.<br/><br/>
     TYPO3 is a registered trademark of the TYPO3 Association. This plugin is an
     independent project and is not affiliated with or endorsed by the TYPO3 Association.
@@ -31,7 +33,7 @@
         <action id="Typo3CommitAi.Generate"
                 class="io.github.sivaprasad1988.typo3commitai.GenerateCommitMessageAction"
                 text="Generate TYPO3 Commit Message"
-                description="Generate a TYPO3 commit message from the selected changes with Ollama"
+                description="Generate a TYPO3 commit message from the selected changes with AI"
                 icon="/icons/typo3ai.svg">
             <add-to-group group-id="Vcs.MessageActionGroup" anchor="first"/>
         </action>

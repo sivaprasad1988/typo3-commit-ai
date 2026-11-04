@@ -3,7 +3,8 @@
 **TYPO3 commit messages for PhpStorm**
 
 PhpStorm plugin that writes TYPO3-style commit messages with a **local Ollama
-model**. Nothing leaves your machine except the request to your own Ollama URL.
+model** (default), **OpenAI** (or any OpenAI-compatible server) or **Claude**.
+With Ollama nothing leaves your machine except the request to your own Ollama URL.
 
 > Built with AI assistance (Claude by Anthropic). Designed and maintained by
 > [sivaprasad1988](https://github.com/sivaprasad1988).
@@ -60,7 +61,7 @@ model and it describes unrelated code. This plugin:
 
 ![Two paths: one click from diff to commit field, or the template dialog with parser, optional AI fill and Apply](docs/images/workflow.svg)
 
-- **One click** (orange T): diff → local Ollama → formatter → commit field. Nothing to fill in.
+- **One click** (orange T): diff → AI provider (local Ollama by default) → formatter → commit field. Nothing to fill in.
 - **Template dialog** (pencil): the current message is parsed into fields, you edit
   (optionally let AI fill type, subject and description), **Apply** formats it back.
   Open it again at any time to fix the message.
@@ -89,8 +90,12 @@ Rules from the
 ## Requirements
 
 - PhpStorm 2026.1 or newer (other IntelliJ-based IDEs with Git should work too)
-- [Ollama](https://ollama.com/download) running locally
-- One of these models (pick it under **Model** in the plugin settings):
+- One AI provider, chosen under **AI provider** in the plugin settings:
+  - **Ollama** (default, local): see below
+  - **OpenAI**: an API key from platform.openai.com, or any OpenAI-compatible
+    server (OpenRouter, LM Studio, …) with its base URL
+  - **Claude**: an API key from console.anthropic.com
+- For Ollama: [Ollama](https://ollama.com/download) running locally and one of these models (pick it under **Model** in the plugin settings):
 
   | Model | Disk | RAM | Use when |
   |---|---|---|---|
@@ -163,9 +168,15 @@ The actions are available in the commit dialog. Change or add shortcuts in
 
 | Setting | Default | Note |
 |---|---|---|
-| URL | `http://localhost:11434` | Ollama server |
-| Model | `qwen2.5-coder:14b` | pick `qwen2.5-coder:14b` or `qwen2.5-coder:7b`, or type any pulled Ollama model |
-| Temperature (%) | `20` | lower = more consistent |
+| AI provider | Ollama | Ollama (local), OpenAI / OpenAI-compatible, or Claude |
+| Ollama URL | `http://localhost:11434` | Ollama server |
+| Ollama model | `qwen2.5-coder:14b` | pick `qwen2.5-coder:14b` or `qwen2.5-coder:7b`, or type any pulled Ollama model |
+| OpenAI base URL | `https://api.openai.com/v1` | change for OpenAI-compatible servers, e.g. `https://openrouter.ai/api/v1` |
+| OpenAI model | `gpt-6.1-sol` | or `gpt-6-astra`, `gpt-6-luna`, or type any model |
+| Claude base URL | `https://api.anthropic.com` | |
+| Claude model | `claude-opus-5-5` | or `claude-sonnet-5-5`, `claude-haiku-5-5` (cheapest, fastest), or type any model |
+| API key | empty | per provider; stored in the IDE password safe (OS keychain), not in the settings file |
+| Temperature (%) | `20` | lower = more consistent; not sent to Claude (the API rejects it); retried without it if an OpenAI model rejects it |
 | Timeout (s) | `180` | the first call loads the model and is slower |
 | Max diff size (chars) | `40000` | larger diffs are cut, with a warning |
 | Add `Resolves: #N` | on | only when the branch name contains an issue number |
@@ -180,6 +191,10 @@ The actions are available in the commit dialog. Change or add shortcuts in
 | `Cannot reach Ollama at http://localhost:11434. Is Ollama running?` | Start Ollama (`ollama serve` or the Ollama app). Check the URL in the settings. |
 | `Ollama error 404: … not found. Run: ollama pull <model>` | The model is not pulled. Run the command shown, or set a pulled model (`ollama list`). |
 | `Ollama did not answer within 180 s.` | The first call loads the model into memory. Try again, raise the timeout, or use a smaller model such as `qwen2.5-coder:7b`. |
+| `No OpenAI API key set.` / `No Anthropic API key set.` | Enter the key under **Settings → Tools → Core Commit AI**. |
+| `OpenAI error 401: …` / `Claude error 401: …` | The API key is wrong or revoked. Enter a new one. |
+| `… error 429: …` | Rate limit or quota reached. Wait, or check billing for your account. |
+| `Claude declined the request (stop_reason: refusal).` | The model refused this diff. Try again or switch the model. |
 | `Diff larger than 40000 chars, so the message may be incomplete (…)` | The listed files were cut or left out. Raise **Max diff size** or commit in smaller parts. |
 | `No changes selected for commit.` | Check at least one file in the commit dialog. |
 | `Model did not return JSON` / `Model returned an empty subject.` | Use one of the suggested coding models (`qwen2.5-coder:14b` or `qwen2.5-coder:7b`). If it happens often with `7b`, switch to `14b`. If you changed the system prompt, keep the JSON field names or clear it to restore the default. |
@@ -204,11 +219,14 @@ needs about 3 minutes just to read the diff, `7b` about 1.5 minutes. Lower
 **Max diff size** or commit in smaller parts to speed this up.
 
 **Does my code leave the machine?**
-Only as the request to the Ollama URL you configure. With the default
-`http://localhost:11434`, everything stays local.
+With Ollama: only as the request to the Ollama URL you configure. With the
+default `http://localhost:11434`, everything stays local.
+With OpenAI or Claude: **yes**. The diff of the files checked in the commit
+dialog (including any secrets in it) is sent to that provider and handled
+under its data policy. Use Ollama for code you may not share.
 
 **Can I use it without AI?**
-Yes. The template dialog works without Ollama; only **Generate with AI** needs it.
+Yes. The template dialog works without any AI provider; only **Generate with AI** needs it.
 
 **Will regenerating break my Gerrit change?**
 No. An existing `Change-Id:` line is kept, so amending updates the same change.
