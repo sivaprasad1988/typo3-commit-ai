@@ -9,6 +9,7 @@ import java.time.Duration
 /**
  * Talks to a real local Ollama. Skipped unless OLLAMA_IT=1, e.g.
  * OLLAMA_IT=1 OLLAMA_MODEL=qwen2.5-coder:14b ./gradlew test
+ * OLLAMA_IT=1 OLLAMA_MODEL=qwen2.5-coder:7b ./gradlew test
  */
 class OllamaIntegrationTest {
     private fun client() = OllamaClient(

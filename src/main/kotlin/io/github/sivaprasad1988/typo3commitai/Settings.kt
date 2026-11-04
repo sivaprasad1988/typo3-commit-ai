@@ -8,6 +8,7 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.options.BoundConfigurable
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.ui.dsl.builder.AlignX
+import com.intellij.ui.dsl.builder.bindItem
 import com.intellij.ui.dsl.builder.bindIntText
 import com.intellij.ui.dsl.builder.bindSelected
 import com.intellij.ui.dsl.builder.bindText
@@ -42,6 +43,9 @@ class Settings : PersistentStateComponent<Settings.Data> {
         get() = data.systemPrompt.ifBlank { Prompts.DEFAULT_SYSTEM }
 
     companion object {
+        /** Offered in the settings drop-down; any other pulled model can still be typed in. */
+        val SUGGESTED_MODELS = listOf("qwen2.5-coder:14b", "qwen2.5-coder:7b")
+
         fun get(): Settings = service()
     }
 }
@@ -53,8 +57,15 @@ class SettingsConfigurable : BoundConfigurable("Core Commit AI") {
             group("Ollama") {
                 row("URL:") { textField().bindText(s::ollamaUrl).columns(30) }
                 row("Model:") {
-                    textField().bindText(s::model).columns(30)
-                        .comment("Must be pulled first, e.g. <code>ollama pull qwen2.5-coder:14b</code>")
+                    comboBox(Settings.SUGGESTED_MODELS)
+                        .applyToComponent { isEditable = true }
+                        .bindItem({ s.model }, { s.model = it?.trim().orEmpty().ifEmpty { Settings.SUGGESTED_MODELS.first() } })
+                        .columns(30)
+                        .comment(
+                            "<code>qwen2.5-coder:14b</code>: better messages, about 16 GB RAM. " +
+                                "<code>qwen2.5-coder:7b</code>: about twice as fast, about 8 GB RAM. " +
+                                "Or type any pulled model. Pull first, e.g. <code>ollama pull qwen2.5-coder:7b</code>",
+                        )
                 }
                 row("Temperature (%):") { intTextField(0..100).bindIntText(s::temperaturePercent) }
                 row("Timeout (s):") { intTextField(10..900).bindIntText(s::timeoutSeconds) }

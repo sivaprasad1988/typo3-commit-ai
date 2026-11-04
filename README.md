@@ -90,13 +90,16 @@ Rules from the
 
 - PhpStorm 2026.1 or newer (other IntelliJ-based IDEs with Git should work too)
 - [Ollama](https://ollama.com/download) running locally
-- A model, by default `qwen2.5-coder:14b` (about 9 GB of disk; about 16 GB of RAM recommended):
+- One of these models (pick it under **Model** in the plugin settings):
+
+  | Model | Disk | RAM | Use when |
+  |---|---|---|---|
+  | `qwen2.5-coder:14b` (default) | about 9 GB | about 16 GB | you want the best messages |
+  | `qwen2.5-coder:7b` | about 4.7 GB | about 8 GB | you want answers about twice as fast, or have less RAM |
 
   ```sh
-  ollama pull qwen2.5-coder:14b
+  ollama pull qwen2.5-coder:14b   # or: ollama pull qwen2.5-coder:7b
   ```
-
-  With less RAM, use `qwen2.5-coder:7b` and set it in the plugin settings.
 
 ## Install
 
@@ -161,7 +164,7 @@ The actions are available in the commit dialog. Change or add shortcuts in
 | Setting | Default | Note |
 |---|---|---|
 | URL | `http://localhost:11434` | Ollama server |
-| Model | `qwen2.5-coder:14b` | any pulled Ollama model |
+| Model | `qwen2.5-coder:14b` | pick `qwen2.5-coder:14b` or `qwen2.5-coder:7b`, or type any pulled Ollama model |
 | Temperature (%) | `20` | lower = more consistent |
 | Timeout (s) | `180` | the first call loads the model and is slower |
 | Max diff size (chars) | `40000` | larger diffs are cut, with a warning |
@@ -179,11 +182,26 @@ The actions are available in the commit dialog. Change or add shortcuts in
 | `Ollama did not answer within 180 s.` | The first call loads the model into memory. Try again, raise the timeout, or use a smaller model such as `qwen2.5-coder:7b`. |
 | `Diff larger than 40000 chars, so the message may be incomplete (…)` | The listed files were cut or left out. Raise **Max diff size** or commit in smaller parts. |
 | `No changes selected for commit.` | Check at least one file in the commit dialog. |
-| `Model did not return JSON` / `Model returned an empty subject.` | Use a coding model (default `qwen2.5-coder:14b`). If you changed the system prompt, keep the JSON field names or clear it to restore the default. |
+| `Model did not return JSON` / `Model returned an empty subject.` | Use one of the suggested coding models (`qwen2.5-coder:14b` or `qwen2.5-coder:7b`). If it happens often with `7b`, switch to `14b`. If you changed the system prompt, keep the JSON field names or clear it to restore the default. |
 | No button in the commit dialog | The buttons sit in the toolbar of the commit message field. Check that the plugin is enabled in **Settings → Plugins** and restart the IDE after installing. |
 | `No issue number found in branch "…"` | The branch name does not match the **Issue regex** (default: a number with at least 3 digits between `/`, `-` or `_`, e.g. `feature/12345-text`). |
 
 ## FAQ
+
+**Should I use `qwen2.5-coder:7b` or `qwen2.5-coder:14b`?**
+Start with `14b` for the best messages. Switch to `7b` if generating feels slow
+or your machine has less than 16 GB of RAM. Both get the same prompt and the
+same JSON format, and you can switch any time under **Settings → Tools → Core
+Commit AI → Model**. Measured on an Apple M1 Pro with 32 GB of RAM:
+
+| Model | Writing speed | Reading speed | Load time | Memory while loaded |
+|---|---|---|---|---|
+| `qwen2.5-coder:14b` | about 12 tokens/s | about 68 tokens/s | about 6.5 s | about 10 GB |
+| `qwen2.5-coder:7b` | about 25 tokens/s | about 134 tokens/s | about 1.8 s | about 6.6 GB |
+
+Large diffs are slowest to read: at 40000 chars (about 13k tokens), `14b`
+needs about 3 minutes just to read the diff, `7b` about 1.5 minutes. Lower
+**Max diff size** or commit in smaller parts to speed this up.
 
 **Does my code leave the machine?**
 Only as the request to the Ollama URL you configure. With the default
@@ -215,7 +233,8 @@ Requires JDK 21.
 
 ```sh
 ./gradlew test buildPlugin          # zip in build/distributions/
-OLLAMA_IT=1 ./gradlew test          # also runs the test against a real local Ollama
+OLLAMA_IT=1 ./gradlew test          # also runs the test against a real local Ollama (default model)
+OLLAMA_IT=1 OLLAMA_MODEL=qwen2.5-coder:7b ./gradlew test --rerun-tasks   # same, against 7b
 ```
 
 The build compiles against a local PhpStorm installation (`platformPath` in
